@@ -1,0 +1,67 @@
+<template>
+  <view @tap="cellTap({{index}})" class="cell">
+    <image wx:if="{{leftIcon}}" class="cell-left-icon" src="{{leftIcon}}"/>
+    <text class="cell-title">{{title}}</text>
+    <image class="cell-right-icon" src="./../images/icon_right.png"/>
+  </view>
+  <view wx:if="{{last}}" class="cell-border-bottom"></view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class Cell extends wepy.component {
+  props = {
+    leftIcon: {
+      default: ''
+    },
+    title: {
+      default: ''
+    },
+    last: { // 是否是最后一个cell，如果是最后一个，不安显示底部边框
+      default: false
+    }
+  }
+  methods = {
+    cellTap(index) {
+      this.$emit('cellTap', index)
+    }
+  }
+}
+</script>
+<style lang="less">
+  .cell {
+    width: 100%;
+    height: 100rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 20rpx;
+    background-color: #fff;
+    .cell-left-icon {
+      width: 44rpx;
+      height: 44rpx;
+      margin-right: 16rpx;
+    }
+    .cell-title {
+      flex: 1;
+    }
+    .cell-right-icon {
+      width: 36rpx;
+      height: 36rpx;
+    }
+  }
+  .cell-border-bottom {
+    position: relative;
+    width: 100%;
+    &::after {
+      content: '';
+      position: absolute;
+      left: 24rpx;
+      right: 0;
+      height: 1rpx;
+      background-color: #eee;
+      // transform: scaleY(0.5);
+    }
+  }
+</style>
+

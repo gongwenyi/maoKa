@@ -1,0 +1,77 @@
+<style lang='less'>
+  @import 'css/common.less';
+  @import 'css/variables.less';
+</style>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/home',
+      'pages/maoKa',
+      'pages/info'
+    ],
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#ffdc1e',
+      navigationBarTitleText: '猫卡',
+      navigationBarTextStyle: 'black',
+      backgroundColor: '#fff',
+      backgroundTextStyle: 'dark'
+    },
+    tabBar: {
+      'color': '#9b9b9b',
+      'selectedColor': '#edcd22',
+      'backgroundColor': '#000',
+      'borderStyle': 'black',
+      'list': [{
+        'pagePath': 'pages/home',
+        'text': '首页',
+        'iconPath': 'images/icon_home.png',
+        'selectedIconPath': 'images/icon_home_active.png'
+      }, {
+        'pagePath': 'pages/maoKa',
+        'text': '猫卡',
+        'iconPath': 'images/icon_classify.png',
+        'selectedIconPath': 'images/icon_classify_active.png'
+      }, {
+        'pagePath': 'pages/info',
+        'text': '我',
+        'iconPath': 'images/icon_info.png',
+        'selectedIconPath': 'images/icon_info_active.png'
+      }]
+    }
+  }
+
+  globalData = {
+    userInfo: null
+  }
+
+  constructor () {
+    super()
+    this.use('requestfix')
+  }
+
+  onLaunch() {
+    this.getUserInfo()
+  }
+
+  getUserInfo(cb) {
+    const that = this
+    if (this.globalData.userInfo) {
+      return this.globalData.userInfo
+    }
+    wepy.getUserInfo({
+      success (res) {
+        console.log('res', res)
+        that.globalData.userInfo = res.userInfo
+        cb && cb(res.userInfo)
+      }
+    })
+  }
+}
+</script>

@@ -1,0 +1,34 @@
+<style lang="less">
+
+</style>
+<template>
+  <view class="container">
+    购物车
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '购物车'
+    }
+    components = {
+
+    }
+
+    data = {
+      mynum: 20,
+      userInfo: {
+        nickName: '加载中...'
+      },
+      normalTitle: '原始标题',
+      setTimeoutTitle: '标题三秒后会被修改',
+      count: 0,
+      netrst: '',
+    }
+
+
+  }
+</script>

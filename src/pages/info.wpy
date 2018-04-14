@@ -1,0 +1,169 @@
+<template>
+  <view class="container">
+    <view class="userinfo">
+      <view class="userinfo-avatar">
+        <image class="userinfo-avatar-img" src="{{avatarUrl}}"/>
+      </view>
+      <view class="userinfo-info">
+        <text class="userinfo-info-nickname">{{nickName}}</text>
+        <text class="userinfo-info-tip">还没有猫卡，前往注册</text>
+      </view>
+    </view>
+    <view class="actions">
+      <view class="actions-item border">
+        <image class="actions-item-icon" src="./../images/icon_nav_04.png"/>
+        <text class="actions-item-text">投食记录</text>
+      </view>
+      <view class="actions-item border">
+        <image class="actions-item-icon" src="./../images/icon_nav_04.png"/>
+        <text class="actions-item-text">罐头兑换</text>
+      </view>
+      <view class="actions-item">
+        <image class="actions-item-icon" src="./../images/icon_nav_04.png"/>
+        <text class="actions-item-text">猫贴贴</text>
+      </view>
+    </view>
+    <view class="cells">
+      <repeat for="{{cellList}}" key="index" index="index" item="item">
+        <cell @cellTap.user="handleCellTap" :index="index" :leftIcon.sync="item.leftIcon" :title="item.title" last="{{index === (cellList.length - 1) ? true : false}}"/>
+      </repeat>
+      <!-- <cell01 @cellTap.user="handleCellTap('sdfd')" :leftIcon.sync="leftIcon" title="兑换记录"/>
+      <cell02 :leftIcon.sync="leftIcon" title="常见问题"/>
+      <cell03 :leftIcon.sync="leftIcon" title="关于猫卡"/>
+      <cell04 :leftIcon.sync="leftIcon" title="设置" last="{{true}}"/> -->
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Cell from './../components/cell'
+
+  export default class Index extends wepy.page {
+    config = {
+      // navigationBarTitleText: '我',
+      enablePullDownRefresh: true
+    }
+    components = {
+      cell: Cell,
+      // cell01: Cell,
+      // cell02: Cell,
+      // cell03: Cell,
+      // cell04: Cell,
+    }
+
+    data = {
+      avatarUrl: '',
+      nickName: '',
+      leftIcon: './../images/icon_home.png',
+      cellList: [
+        {
+          leftIcon: './../images/icon_home.png',
+          title: '兑换记录'
+        },
+        {
+          leftIcon: './../images/icon_home.png',
+          title: '常见问题'
+        },
+        {
+          leftIcon: './../images/icon_home.png',
+          title: '关于猫卡'
+        },
+        {
+          leftIcon: './../images/icon_home.png',
+          title: '设置'
+        },
+      ],
+      testRefresh: '加载中。。。',
+    }
+
+    onLoad() {
+      // console.log(this.$parent.globalData.userInfo)
+      const userInfo = this.$parent.globalData.userInfo
+      this.avatarUrl = userInfo.avatarUrl
+      this.nickName = userInfo.nickName
+    }
+
+    methods = {
+      handleCellTap(index) {
+        console.log('点击了cell', index)
+      }
+    }
+
+    onPullDownRefresh() {
+      wepy.showNavigationBarLoading()
+      console.log('refresh start')
+      setTimeout(() => {
+        console.log('refresh end')
+        this.testRefresh = '拿到数据了'
+        wepy.stopPullDownRefresh()
+        wepy.hideNavigationBarLoading()
+        this.$apply()
+      }, 1000);
+      this.$apply()
+    }
+
+
+  }
+</script>
+<style lang="less">
+  @import './../css/variables.less';
+  .userinfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 40rpx;
+    background-color: @base-color;
+    .userinfo-avatar {
+      width: 110rpx;
+      height: 110rpx;
+      border-radius: 6rpx;
+      overflow: hidden;
+    }
+    .userinfo-avatar-img {
+      width: 110rpx;
+      height: 110rpx;
+    }
+    .userinfo-info {
+      display: flex;
+      flex-direction: column;
+      padding-left: 20rpx;
+    }
+    .userinfo-info-nickname {
+      font-size: 34rpx;
+    }
+    .userinfo-info-tip {
+      font-size: 24rpx;
+    }
+  }
+  .actions {
+    width: 100%;
+    margin-top: 20rpx;
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    .actions-item {
+      height: 236rpx;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      &.border {
+        border-right: 1rpx solid #efefef;
+      }
+      .actions-item-icon {
+        width: 50rpx;
+        height: 50rpx;
+      }
+      .actions-item-text {
+        margin-top: 20rpx;
+      }
+    }
+  }
+  .cells {
+    margin-top: 20rpx;
+    background-color: '#fff';
+  }
+</style>
